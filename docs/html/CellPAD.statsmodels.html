@@ -1,0 +1,284 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CellPAD.statsmodels package &#8212; CellPAD 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cellpad-statsmodels-package">
+<h1>CellPAD.statsmodels package<a class="headerlink" href="#cellpad-statsmodels-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-CellPAD.statsmodels.holt_winters">
+<span id="cellpad-statsmodels-holt-winters-module"></span><h2>CellPAD.statsmodels.holt_winters module<a class="headerlink" href="#module-CellPAD.statsmodels.holt_winters" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (c) 2017 Eric Lundquist</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+<dl class="class">
+<dt id="CellPAD.statsmodels.holt_winters.HoltWinters">
+<em class="property">class </em><code class="descclassname">CellPAD.statsmodels.holt_winters.</code><code class="descname">HoltWinters</code><a class="headerlink" href="#CellPAD.statsmodels.holt_winters.HoltWinters" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CellPAD.statsmodels.holt_winters.HoltWinters.holtWinters">
+<code class="descname">holtWinters</code><span class="sig-paren">(</span><em>ts</em>, <em>p</em>, <em>sp</em>, <em>ahead</em>, <em>mtype</em>, <em>alpha=None</em>, <em>beta=None</em>, <em>gamma=None</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.statsmodels.holt_winters.HoltWinters.holtWinters" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>HoltWinters retrospective smoothing &amp; future period prediction algorithm </dt>
+<dd>both the additive and multiplicative methods are implemented and the (alpha, beta, gamma)
+parameters have to be either all user chosen or all optimized via one-step-ahead prediction MSD
+initial (a, b, s) parameter values are calculated with a fixed-period seasonal decomposition and a
+simple linear regression to estimate the initial level (B0) and initial trend (B1) values</dd>
+<dt>&#64;params:</dt>
+<dd><ul class="first last simple">
+<li>ts[list]:      time series of data to model</li>
+<li>p[int]:        period of the time series (for the calculation of seasonal effects)</li>
+<li>sp[int]:       number of starting periods to use when calculating initial parameter values</li>
+<li>ahead[int]:    number of future periods for which predictions will be generated</li>
+<li>mtype[string]: which method to use for smoothing/forecasts [‘additive’/’multiplicative’]</li>
+<li>alpha[float]:  user-specified level  forgetting factor (one-step MSD optimized if None)</li>
+<li>beta[float]:   user-specified slope  forgetting factor (one-step MSD optimized if None)</li>
+<li>gamma[float]:  user-specified season forgetting factor (one-step MSD optimized if None)</li>
+</ul>
+</dd>
+<dt>&#64;return: </dt>
+<dd><ul class="first last simple">
+<li>alpha[float]:    chosen/optimal level  forgetting factor used in calculations</li>
+<li>beta[float]:     chosen/optimal trend  forgetting factor used in calculations</li>
+<li>gamma[float]:    chosen/optimal season forgetting factor used in calculations</li>
+<li>MSD[float]:      chosen/optimal Mean Square Deviation with respect to one-step-ahead predictions</li>
+<li>params[tuple]:   final (a, b, s) parameter values used for the prediction of future observations</li>
+<li>smoothed[list]:  smoothed values (level + trend + seasonal) for the original time series</li>
+<li>predicted[list]: predicted values for the next &#64;ahead periods of the time series</li>
+</ul>
+</dd>
+<dt>sample calls:</dt>
+<dd>results = holtWinters(ts, 12, 4, 24, ‘additive’)
+results = holtWinters(ts, 12, 4, 24, ‘multiplicative’, alpha = 0.1, beta = 0.2, gamma = 0.3)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.statsmodels.holt_winters.HoltWinters.predict_next_period">
+<code class="descname">predict_next_period</code><span class="sig-paren">(</span><em>ts</em>, <em>p</em>, <em>sp</em>, <em>ahead</em>, <em>mtype='multiplicative'</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.statsmodels.holt_winters.HoltWinters.predict_next_period" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add by Jun.
+:param X: The time series
+:param p: period length of time series
+:param sp: start periods(instances) for learning the initial parameters
+:param ahead: number of future periods for which predictions will be generated
+:param mtype: “multiplicative” or “additive”
+:return: the predicted series with the length of ahead periods.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-CellPAD.statsmodels.local_correlation_score">
+<span id="cellpad-statsmodels-local-correlation-score-module"></span><h2>CellPAD.statsmodels.local_correlation_score module<a class="headerlink" href="#module-CellPAD.statsmodels.local_correlation_score" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="CellPAD.statsmodels.local_correlation_score.LCS">
+<em class="property">class </em><code class="descclassname">CellPAD.statsmodels.local_correlation_score.</code><code class="descname">LCS</code><span class="sig-paren">(</span><em>window=20</em>, <em>beta=0.8</em>, <em>svd_fraction=0.99</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.statsmodels.local_correlation_score.LCS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CellPAD.statsmodels.local_correlation_score.LCS.compute_auto_matrix">
+<code class="descname">compute_auto_matrix</code><span class="sig-paren">(</span><em>X</em>, <em>t</em>, <em>last_matrix</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.statsmodels.local_correlation_score.LCS.compute_auto_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>It computes the auto-correlation matrix for X.
+:param X: list&lt;float&gt; | a time series.
+:param t: int | the index of the current point.
+:param last_matrix: array&lt;float&gt; | the last auto-correlation matrix.
+:return: array&lt;float&gt; | the the auto-correlation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.statsmodels.local_correlation_score.LCS.lcs">
+<code class="descname">lcs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.statsmodels.local_correlation_score.LCS.lcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>It implements local correlation scores and measure each point one by one.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.statsmodels.local_correlation_score.LCS.measure_current_period">
+<code class="descname">measure_current_period</code><span class="sig-paren">(</span><em>series1</em>, <em>series2</em>, <em>labels</em>, <em>period_len</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.statsmodels.local_correlation_score.LCS.measure_current_period" title="Permalink to this definition">¶</a></dt>
+<dd><p>It computes the local correlation score of the current period(iteration).
+:param series1: list&lt;float&gt; | the time series 1.
+:param series2: list&lt;float&gt; | the time series 2.
+:param labels: list&lt;bool&gt; | the labels of the previous instances.
+:param period_len: int | the duration of a period.
+:return: list&lt;float&gt; | the local correlation score of the current period.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-CellPAD.statsmodels.smoothing_algorithms">
+<span id="cellpad-statsmodels-smoothing-algorithms-module"></span><h2>CellPAD.statsmodels.smoothing_algorithms module<a class="headerlink" href="#module-CellPAD.statsmodels.smoothing_algorithms" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="CellPAD.statsmodels.smoothing_algorithms.EWMA">
+<em class="property">class </em><code class="descclassname">CellPAD.statsmodels.smoothing_algorithms.</code><code class="descname">EWMA</code><a class="headerlink" href="#CellPAD.statsmodels.smoothing_algorithms.EWMA" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CellPAD.statsmodels.smoothing_algorithms.EWMA.ewma">
+<code class="descname">ewma</code><span class="sig-paren">(</span><em>series</em>, <em>beta=0.8</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.statsmodels.smoothing_algorithms.EWMA.ewma" title="Permalink to this definition">¶</a></dt>
+<dd><p>It implements a Exponential Weighted Moving Average.
+:param series: list&lt;float&gt; | the series.
+:return: float | the predicted value of the current instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.statsmodels.smoothing_algorithms.EWMA.predict_next_period">
+<code class="descname">predict_next_period</code><span class="sig-paren">(</span><em>series</em>, <em>labels</em>, <em>period_len</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.statsmodels.smoothing_algorithms.EWMA.predict_next_period" title="Permalink to this definition">¶</a></dt>
+<dd><p>It predict the next period of time series using the holt-winter algorithm.
+It skips the detected anomalies.
+:param series: list&lt;float&gt; | the historical time series.
+:param labels: list&lt;bool&gt; | the labels of the historical data.
+:param period_len: int | the period length.
+:return: list&lt;float&gt; | the predicted series for the next period.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="CellPAD.statsmodels.smoothing_algorithms.HW">
+<em class="property">class </em><code class="descclassname">CellPAD.statsmodels.smoothing_algorithms.</code><code class="descname">HW</code><a class="headerlink" href="#CellPAD.statsmodels.smoothing_algorithms.HW" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CellPAD.statsmodels.smoothing_algorithms.HW.predict_next_period">
+<code class="descname">predict_next_period</code><span class="sig-paren">(</span><em>series</em>, <em>period_len=168</em>, <em>mtype='multiplicative'</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.statsmodels.smoothing_algorithms.HW.predict_next_period" title="Permalink to this definition">¶</a></dt>
+<dd><p>It predict the next period of time series using the holt-winter algorithm.
+:param series: list&lt;float&gt; | the historical time series.
+:param period_len: int | the period length.
+:param mtype: str | ‘multiplicative’ or ‘additive’
+:return: list&lt;float&gt; | the predicted series for the next period.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="CellPAD.statsmodels.smoothing_algorithms.WMA">
+<em class="property">class </em><code class="descclassname">CellPAD.statsmodels.smoothing_algorithms.</code><code class="descname">WMA</code><a class="headerlink" href="#CellPAD.statsmodels.smoothing_algorithms.WMA" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CellPAD.statsmodels.smoothing_algorithms.WMA.predict_next_period">
+<code class="descname">predict_next_period</code><span class="sig-paren">(</span><em>series</em>, <em>labels</em>, <em>period_len</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.statsmodels.smoothing_algorithms.WMA.predict_next_period" title="Permalink to this definition">¶</a></dt>
+<dd><p>It predict the next period of time series using the holt-winter algorithm.
+It skips the detected anomalies.
+:param series: list&lt;float&gt; | the historical time series.
+:param labels: list&lt;bool&gt; | the labels of the historical data.
+:param period_len: int | the period length.
+:return: list&lt;float&gt; | the predicted series for the next period.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.statsmodels.smoothing_algorithms.WMA.wma">
+<code class="descname">wma</code><span class="sig-paren">(</span><em>series</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.statsmodels.smoothing_algorithms.WMA.wma" title="Permalink to this definition">¶</a></dt>
+<dd><p>It implements a Weighted Moving Average.
+:param series: list&lt;float&gt; | the series.
+:return: float | the predicted value of the current instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="cellpad-statsmodels-timeseries-decomposition-module">
+<h2>CellPAD.statsmodels.timeseries_decomposition module<a class="headerlink" href="#cellpad-statsmodels-timeseries-decomposition-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-CellPAD.statsmodels">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-CellPAD.statsmodels" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CellPAD</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Wu Jun.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/CellPAD.statsmodels.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

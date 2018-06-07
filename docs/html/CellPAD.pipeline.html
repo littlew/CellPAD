@@ -1,0 +1,447 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CellPAD.pipeline package &#8212; CellPAD 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cellpad-pipeline-package">
+<h1>CellPAD.pipeline package<a class="headerlink" href="#cellpad-pipeline-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-CellPAD.pipeline.algorithm">
+<span id="cellpad-pipeline-algorithm-module"></span><h2>CellPAD.pipeline.algorithm module<a class="headerlink" href="#module-CellPAD.pipeline.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="CellPAD.pipeline.algorithm.RegressionPredictor">
+<em class="property">class </em><code class="descclassname">CellPAD.pipeline.algorithm.</code><code class="descname">RegressionPredictor</code><span class="sig-paren">(</span><em>algorithm_name</em>, <em>n_esimators</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.algorithm.RegressionPredictor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to call regression algorithm, e.g. RF, RT, SLR, HR</p>
+<dl class="method">
+<dt id="CellPAD.pipeline.algorithm.RegressionPredictor.predict">
+<code class="descname">predict</code><span class="sig-paren">(</span><em>predict_features</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.algorithm.RegressionPredictor.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>It calls the model(self.reg) to making prediction using the features.
+:param predict_features: array&lt;float&gt; | the features.
+:return: list&lt;float&gt; | the predicted response variables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.algorithm.RegressionPredictor.train">
+<code class="descname">train</code><span class="sig-paren">(</span><em>train_features</em>, <em>train_response</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.algorithm.RegressionPredictor.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>It makes the self.reg which is the regression model to fit using the features and the response variables.
+:param train_features: array&lt;float&gt; | the features.
+:param train_response: list&lt;float&gt; | the response variables.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="CellPAD.pipeline.algorithm.StatisticalMeasurement">
+<em class="property">class </em><code class="descclassname">CellPAD.pipeline.algorithm.</code><code class="descname">StatisticalMeasurement</code><span class="sig-paren">(</span><em>algorithm_name</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.algorithm.StatisticalMeasurement" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to call statistical measuring algorithm, e.g. local correlation tracking.</p>
+<dl class="method">
+<dt id="CellPAD.pipeline.algorithm.StatisticalMeasurement.measure">
+<code class="descname">measure</code><span class="sig-paren">(</span><em>series1</em>, <em>series2</em>, <em>labels</em>, <em>period_len=168</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.algorithm.StatisticalMeasurement.measure" title="Permalink to this definition">¶</a></dt>
+<dd><p>It calls self.measure (LCS model) to measure the LCS score of the series 1 and series 2.
+LCS will skip the detected anomalies with “True” label when measures the current instance.
+:param series1: list&lt;float&gt;, the series 1.
+:param series2: list&lt;float&gt;, the series 2.
+:param labels: list&lt;bool&gt;,the labels of the previous detected points.
+:param period_len: int, the number of instance in one period.
+:return: list&lt;float&gt;, a list of the measuring results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="CellPAD.pipeline.algorithm.StatisticalPredictor">
+<em class="property">class </em><code class="descclassname">CellPAD.pipeline.algorithm.</code><code class="descname">StatisticalPredictor</code><span class="sig-paren">(</span><em>algorithm_name</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.algorithm.StatisticalPredictor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to call statistical smoothing prediction algorithm, e.g. WMA, EWMA, HW.</p>
+<dl class="method">
+<dt id="CellPAD.pipeline.algorithm.StatisticalPredictor.predict">
+<code class="descname">predict</code><span class="sig-paren">(</span><em>series</em>, <em>labels</em>, <em>period_len</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.algorithm.StatisticalPredictor.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>It calls the self.predictor(a smoothing model) to predict the reasonable values.
+It will skip the detected anomalies with the “True” label.
+:param series: list&lt;float&gt; | the series
+:param labels: list&lt;bool&gt; | the labels of the previous detected points.
+:param period_len: int | the number of instance in one period.
+:return: list&lt;float&gt; | a list of the predicted results.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="cellpad-pipeline-controller-module">
+<h2>CellPAD.pipeline.controller module<a class="headerlink" href="#cellpad-pipeline-controller-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-CellPAD.pipeline.evaluator">
+<span id="cellpad-pipeline-evaluator-module"></span><h2>CellPAD.pipeline.evaluator module<a class="headerlink" href="#module-CellPAD.pipeline.evaluator" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="CellPAD.pipeline.evaluator.evaluate">
+<code class="descclassname">CellPAD.pipeline.evaluator.</code><code class="descname">evaluate</code><span class="sig-paren">(</span><em>scores</em>, <em>labels</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.evaluator.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>It retures the auc and prauc scores.
+:param scores: list&lt;float&gt; | the anomaly scores predicted by CellPAD.
+:param labels: list&lt;float&gt; | the true labels.
+:return: the auc, prauc.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-CellPAD.pipeline.feature">
+<span id="cellpad-pipeline-feature-module"></span><h2>CellPAD.pipeline.feature module<a class="headerlink" href="#module-CellPAD.pipeline.feature" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="CellPAD.pipeline.feature.FeatureExtractor">
+<em class="property">class </em><code class="descclassname">CellPAD.pipeline.feature.</code><code class="descname">FeatureExtractor</code><span class="sig-paren">(</span><em>timestamps</em>, <em>series</em>, <em>labels</em>, <em>ts_period_len</em>, <em>feature_list</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.feature.FeatureExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CellPAD.pipeline.feature.FeatureExtractor.compute_feature_period_len">
+<code class="descname">compute_feature_period_len</code><span class="sig-paren">(</span><em>period_grain</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.feature.FeatureExtractor.compute_feature_period_len" title="Permalink to this definition">¶</a></dt>
+<dd><p>It computes the period length of different numerical features.
+:param period_grain: str | the identification, which is ‘Hourly’, ‘Daily’ or ‘Weekly’.
+:return: int | the count of instances corresponding to the period_grain.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.feature.FeatureExtractor.compute_features">
+<code class="descname">compute_features</code><span class="sig-paren">(</span><em>start_pos</em>, <em>end_pos</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.feature.FeatureExtractor.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>It computes all the feature vectors in a batch manner, and returns the feature matrix.
+:param start_pos: int | the start index of the current iteration(week).
+:param end_pos: int | the end index of the current iteration(week).
+:return: array&lt;float&gt; | a two-dimension array storing the feature matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.feature.FeatureExtractor.compute_one_feature">
+<code class="descname">compute_one_feature</code><span class="sig-paren">(</span><em>feature_name</em>, <em>start_pos</em>, <em>end_pos</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.feature.FeatureExtractor.compute_one_feature" title="Permalink to this definition">¶</a></dt>
+<dd><p>It computes and returns a vector of one feature.
+:param feature_name: str | the name of the feature.
+:param start_pos: int | the start index of the current iteration(week).
+:param end_pos: int | the end index of the current iteration(week).
+:return: a list&lt;float&gt; | the feature vector.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.feature.FeatureExtractor.get_sametime_instances">
+<code class="descname">get_sametime_instances</code><span class="sig-paren">(</span><em>current_index</em>, <em>feature_period_len</em>, <em>ts_period_len</em>, <em>instance_count</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.feature.FeatureExtractor.get_sametime_instances" title="Permalink to this definition">¶</a></dt>
+<dd><p>It results the list of instances occurred in the same time of the current point.
+It will skip the anomalies which are have been detected.
+:param current_index: int | the index of the current point(instance).
+:param feature_period_len: int | the interval size. In hourly basis time series, it is 24 for the ‘hourly’ feature.
+:param ts_period_len: int | the weekly period length of the time series.
+:param instance_count: int | the count of the same-time instances.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="CellPAD.pipeline.feature.FeatureTools">
+<em class="property">class </em><code class="descclassname">CellPAD.pipeline.feature.</code><code class="descname">FeatureTools</code><a class="headerlink" href="#CellPAD.pipeline.feature.FeatureTools" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CellPAD.pipeline.feature.FeatureTools.compute_feature_matrix">
+<code class="descname">compute_feature_matrix</code><span class="sig-paren">(</span><em>timestamps</em>, <em>series</em>, <em>labels</em>, <em>ts_period_len</em>, <em>feature_list</em>, <em>start_pos</em>, <em>end_pos</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.feature.FeatureTools.compute_feature_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>It computes and returns the feature matrix.
+:param timestamps: list&lt;str&gt; | the time stamps of the time series.
+:param series: list&lt;float&gt; | the values of the time series.
+:param labels: list&lt;bool&gt; | the labels of the time series.
+:param ts_period_len: int | the number of the instances in one period.
+:param feature_list: list&lt;str&gt; | the list of the feature names.
+:param start_pos: int | the first index of the current iteration.
+:param end_pos: int | the last index of the current iteration.
+:return: array&lt;float&gt; | a two-dimension array storing the feature matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.feature.FeatureTools.set_feature_names">
+<code class="descname">set_feature_names</code><span class="sig-paren">(</span><em>feature_types</em>, <em>feature_time_grain</em>, <em>feature_operations</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.feature.FeatureTools.set_feature_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>It reads the Indexical and Numerical features.
+:param feature_types: list&lt;str&gt; | a set of {‘Indexical’, ‘Numerical’}
+:param feature_time_grain: str | the time grain of the numerical features.
+:param feature_operations: str | the identification of the operations of the numerical features.
+:return: list&lt;str&gt; | a list of feature names e.g. ‘3_Daily_Mean’,</p>
+<blockquote>
+<div>means the feature is the average of the previous 3 days.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.feature.FeatureTools.set_window_size">
+<code class="descname">set_window_size</code><span class="sig-paren">(</span><em>hourly_wins</em>, <em>daily_wins</em>, <em>weekly_wins</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.feature.FeatureTools.set_window_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>It provides a interface to set the windows size parameters.
+:param hourly_wins: list&lt;int&gt; | a list of the count of the hours.
+:param daily_wins: list&lt;int&gt; |  a list of the count of the days.
+:param weekly_wins: list&lt;int&gt; |  a list of the count of the weeks.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-CellPAD.pipeline.filter">
+<span id="cellpad-pipeline-filter-module"></span><h2>CellPAD.pipeline.filter module<a class="headerlink" href="#module-CellPAD.pipeline.filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="CellPAD.pipeline.filter.ChangeAnomalyFilter">
+<em class="property">class </em><code class="descclassname">CellPAD.pipeline.filter.</code><code class="descname">ChangeAnomalyFilter</code><span class="sig-paren">(</span><em>rule='gauss'</em>, <em>coef=3.0</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.filter.ChangeAnomalyFilter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CellPAD.pipeline.filter.ChangeAnomalyFilter.detect_anomaly_lcs">
+<code class="descname">detect_anomaly_lcs</code><span class="sig-paren">(</span><em>lcs_scores</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.filter.ChangeAnomalyFilter.detect_anomaly_lcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>It detects the anomalies which are measured by local correlation tracking method.
+- gauss: threshold = 0.0 + self.sigma * std
+- threshold: the given threshold variable
+- proportion: threshold = sort_scores[threshold_index]
+:param lcs_scores: list&lt;float&gt; | the list of local correlation scores
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.filter.ChangeAnomalyFilter.detect_anomaly_regression">
+<code class="descname">detect_anomaly_regression</code><span class="sig-paren">(</span><em>predicted_series1</em>, <em>practical_series1</em>, <em>predicted_series2</em>, <em>practical_series2</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.filter.ChangeAnomalyFilter.detect_anomaly_regression" title="Permalink to this definition">¶</a></dt>
+<dd><p>It calculates the drop ratio of each point by comparing the predicted value and practical value.
+Then it runs filter_anomaly() function to filter out the anomalies by the parameter “rule”.
+:param predicted_series1: list&lt;float&gt; | the predicted values of the KPI series 1.
+:param practical_series1: list&lt;float&gt; | the practical values of the KPI series 1.
+:param predicted_series2: list&lt;float&gt; | the predicted values of the KPI series 2.
+:param practical_series2: list&lt;float&gt; | the practical values of the KPI series 2.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.filter.ChangeAnomalyFilter.filter_anomaly">
+<code class="descname">filter_anomaly</code><span class="sig-paren">(</span><em>change_ratios1</em>, <em>change_ratios2</em>, <em>change_scores</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.filter.ChangeAnomalyFilter.filter_anomaly" title="Permalink to this definition">¶</a></dt>
+<dd><p>It detects the anomalies which are measured by regression method.
+- gauss: threshold1 = mean - self.sigma * std, threshold2 = mean + self.sigma * std
+- threshold: the given threshold variable
+- proportion: threshold = sort_scores[threshold_index]
+:param change_ratios1: list&lt;float&gt; | the change ratios of the KPI1.
+:param change_ratios2: list&lt;float&gt; | the change ratios of the KPI2.
+:param change_scores: list&lt;float&gt; | the average of the change anomaly degree of the two change ratios.
+:return: list&lt;bool&gt; | the list of the labels where “True” stands for an anomaly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.filter.ChangeAnomalyFilter.filter_by_threshold">
+<code class="descname">filter_by_threshold</code><span class="sig-paren">(</span><em>change_ratios</em>, <em>threshold1</em>, <em>threshold2</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.filter.ChangeAnomalyFilter.filter_by_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>It filter out the too deviated points as anomalies.
+:param change_ratios: list&lt;float&gt; | the change ratios.
+:param threshold1: float | the negative threshold standing for a drop deviation.
+:param threshold2: float | the positive threshold standing for a rise deviation.
+:return: list&lt;bool&gt; | the list of the labels where “True” stands for an anomaly.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="CellPAD.pipeline.filter.DropAnomalyFilter">
+<em class="property">class </em><code class="descclassname">CellPAD.pipeline.filter.</code><code class="descname">DropAnomalyFilter</code><span class="sig-paren">(</span><em>rule='gauss'</em>, <em>coef=2.5</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.filter.DropAnomalyFilter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CellPAD.pipeline.filter.DropAnomalyFilter.detect_anomaly">
+<code class="descname">detect_anomaly</code><span class="sig-paren">(</span><em>predicted_series</em>, <em>practical_series</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.filter.DropAnomalyFilter.detect_anomaly" title="Permalink to this definition">¶</a></dt>
+<dd><p>It calculates the drop ratio of each point by comparing the predicted value and practical value.
+Then it runs filter_anomaly() function to filter out the anomalies by the parameter “rule”.
+:param predicted_series: the predicted values of a KPI series
+:param practical_series: the practical values of a KPI series
+:return: drop_ratios, drop_labels and drop_scores</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.filter.DropAnomalyFilter.filter_anomaly">
+<code class="descname">filter_anomaly</code><span class="sig-paren">(</span><em>drop_ratios</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.filter.DropAnomalyFilter.filter_anomaly" title="Permalink to this definition">¶</a></dt>
+<dd><p>It calculates the threshold for different approach(rule) and then calls filter_by_threshold().
+- gauss: threshold = mean - self.sigma * std
+- threshold: the given threshold variable
+- proportion: threshold = sort_scores[threshold_index]
+:param drop_ratios: list&lt;float&gt; | a measure of predicted drop anomaly degree
+:return: list&lt;bool&gt; | the drop labels</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.filter.DropAnomalyFilter.filter_by_threshold">
+<code class="descname">filter_by_threshold</code><span class="sig-paren">(</span><em>drop_scores</em>, <em>threshold</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.filter.DropAnomalyFilter.filter_by_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>It judges whether a point is an anomaly by comparing its drop score and the threshold.
+:param drop_scores: list&lt;float&gt; | a measure of predicted drop anomaly degree.
+:param threshold: float | the threshold to filter out anomalies.
+:return: list&lt;bool&gt; | a list of labels where a point with a “true” label is an anomaly.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-CellPAD.pipeline.synthsiser">
+<span id="cellpad-pipeline-synthsiser-module"></span><h2>CellPAD.pipeline.synthsiser module<a class="headerlink" href="#module-CellPAD.pipeline.synthsiser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="CellPAD.pipeline.synthsiser.ChangeSynthesiser">
+<em class="property">class </em><code class="descclassname">CellPAD.pipeline.synthsiser.</code><code class="descname">ChangeSynthesiser</code><span class="sig-paren">(</span><em>raw_series1</em>, <em>raw_series2</em>, <em>period_len=168</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.synthsiser.ChangeSynthesiser" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CellPAD.pipeline.synthsiser.ChangeSynthesiser.add_point_anomalies">
+<code class="descname">add_point_anomalies</code><span class="sig-paren">(</span><em>anomaly_fraction</em>, <em>lowest_change_ratio</em>, <em>largest_increase_ratio</em>, <em>largest_decrease_ratio</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.synthsiser.ChangeSynthesiser.add_point_anomalies" title="Permalink to this definition">¶</a></dt>
+<dd><p>It inject the single anomalies(called point anomalies) into the raw data.
+:param anomaly_fraction: float | the fraction of the anomalies.
+:param lowest_change_ratio: float | the lowest absolute value of change ratio.
+:param largest_increase_ratio: float | the largest increasing ratio.
+:param largest_decrease_ratio: float | the largest decreasing ratio.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.synthsiser.ChangeSynthesiser.add_segment_anomalies">
+<code class="descname">add_segment_anomalies</code><span class="sig-paren">(</span><em>segment_cnt</em>, <em>shortest_period</em>, <em>longest_period</em>, <em>lowest_change_ratio</em>, <em>largest_increase_ratio</em>, <em>largest_decrease_ratio</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.synthsiser.ChangeSynthesiser.add_segment_anomalies" title="Permalink to this definition">¶</a></dt>
+<dd><p>It inject the continous anomalies(called segment anomalies) into the raw data.
+:param segment_cnt: int | the count of the segment anomalies.
+:param shortest_period: float | the shortest duration of the segment anomalies.
+:param longest_period: float | the longest duration of the segment anomalies.
+:param lowest_change_ratio: float | the lowest absolute value of change ratio.
+:param largest_increase_ratio: float | the largest increasing ratio.
+:param largest_decrease_ratio: float | the largest decreasing ratio.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.synthsiser.ChangeSynthesiser.filter_by_rule">
+<code class="descname">filter_by_rule</code><span class="sig-paren">(</span><em>rule_fraction</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.synthsiser.ChangeSynthesiser.filter_by_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>It filters out the obvious drop anomalies by a rule approach.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.synthsiser.ChangeSynthesiser.syn_change">
+<code class="descname">syn_change</code><span class="sig-paren">(</span><em>point_anomaly_fraction=0.01</em>, <em>segment_cnt=3</em>, <em>rule_fraction=0.005</em>, <em>shortest_period=3</em>, <em>longest_period=24</em>, <em>lowest_change_ratio=0.3</em>, <em>largest_increase_ratio=1.0</em>, <em>largest_decrease_ratio=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.synthsiser.ChangeSynthesiser.syn_change" title="Permalink to this definition">¶</a></dt>
+<dd><p>It implements a workflow to inject and filters out anomalies.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="CellPAD.pipeline.synthsiser.DropSynthesiser">
+<em class="property">class </em><code class="descclassname">CellPAD.pipeline.synthsiser.</code><code class="descname">DropSynthesiser</code><span class="sig-paren">(</span><em>raw_series</em>, <em>period_len=168</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.synthsiser.DropSynthesiser" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="CellPAD.pipeline.synthsiser.DropSynthesiser.add_point_anomalies">
+<code class="descname">add_point_anomalies</code><span class="sig-paren">(</span><em>anomaly_fraction</em>, <em>lowest_drop_ratio</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.synthsiser.DropSynthesiser.add_point_anomalies" title="Permalink to this definition">¶</a></dt>
+<dd><p>It inject the single anomalies(called point anomalies) into the raw data.
+:param anomaly_fraction: float | the fraction of the anomalies.
+:param lowest_drop_ratio: float | the lowest drop ratio.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.synthsiser.DropSynthesiser.add_segment_anomalies">
+<code class="descname">add_segment_anomalies</code><span class="sig-paren">(</span><em>segment_cnt</em>, <em>lowest_drop_ratio</em>, <em>shortest_period</em>, <em>longest_period</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.synthsiser.DropSynthesiser.add_segment_anomalies" title="Permalink to this definition">¶</a></dt>
+<dd><p>It inject several continous anomalies(called segment anomalies) into the raw data.
+:param segment_cnt: int | the count of the segment anomalies.
+:param lowest_drop_ratio: float | the lowest drop ratio.
+:param shortest_period: float | the shortest duration of the segment anomalies.
+:param longest_period: float | the longest duration of the segment anomalies.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.synthsiser.DropSynthesiser.filter_by_rule">
+<code class="descname">filter_by_rule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.synthsiser.DropSynthesiser.filter_by_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>It filters out the obvious drop anomalies by a rule approach.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CellPAD.pipeline.synthsiser.DropSynthesiser.syn_drop">
+<code class="descname">syn_drop</code><span class="sig-paren">(</span><em>point_fraction=0.015</em>, <em>lowest_drop_ratio=0.3</em>, <em>segment_cnt=3</em>, <em>shortest_period=3</em>, <em>longest_period=24</em><span class="sig-paren">)</span><a class="headerlink" href="#CellPAD.pipeline.synthsiser.DropSynthesiser.syn_drop" title="Permalink to this definition">¶</a></dt>
+<dd><p>It implements a workflow to inject and filters out anomalies.
+:param point_fraction: float | the fraction of the anomalies.
+:param lowest_drop_ratio: float | the lowest drop ratio of an anomaly.
+:param segment_cnt: int | the count of the segment anomalies.
+:param shortest_period: float | the shortest duration of the segment anomalies.
+:param longest_period: float | the longest duration of the segment anomalies.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-CellPAD.pipeline">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-CellPAD.pipeline" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CellPAD</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Wu Jun.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/CellPAD.pipeline.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
